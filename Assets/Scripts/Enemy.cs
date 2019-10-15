@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         string otherTag = other.gameObject.tag;
-        if (otherTag == "Player") {
+        if (otherTag == "Player" && _player != null) {
             _player.Damage();
             _animator.SetTrigger("Destroyed");
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
             }
             _animator.SetTrigger("Destroyed");
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            Destroy(gameObject, 2.5f);
+            Destroy(gameObject, 3f);
         }
     }
 }

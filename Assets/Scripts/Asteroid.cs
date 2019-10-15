@@ -6,10 +6,15 @@ public class Asteroid : MonoBehaviour
 {
     [SerializeField]
     private float _rotateSpeed;
+    private SpawnManager _spawnManager;
+
+    private Animator _animator;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _animator = gameObject.GetComponent<Animator>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -20,21 +25,14 @@ public class Asteroid : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        string otherTag = other.gameObject.tag;
-        if (otherTag == "Player")
-        {
-            _player.Damage();
-            _animator.SetTrigger("Destroyed");
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            Destroy(gameObject, 2.5f);
-
-        }
-        else if (otherTag == "Laser")
+        if (other.gameObject.tag == "Laser")
         {
             Destroy(other.gameObject);
-            _animator.SetTrigger("Destroyed");
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            _animator.SetTrigger("Hit");
+            gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            _spawnManager.StartSpawn();
             Destroy(gameObject, 2.5f);
+
         }
     }
 }

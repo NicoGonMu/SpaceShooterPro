@@ -12,12 +12,12 @@ public class SpawnManager : MonoBehaviour
     private GameObject _player;
 
     private float enemyRespawnTime = 5;
+    private bool _spawning = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(SpawnEnemies());
-        StartCoroutine(SpawnPowerup());
+
     }
 
     // Update is called once per frame
@@ -26,8 +26,20 @@ public class SpawnManager : MonoBehaviour
 
     }
 
+    public void StartSpawn()
+    {
+        if (_spawning)
+        {
+            return;
+        }
+
+        _spawning = true;
+        StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnPowerup());
+    }
     IEnumerator SpawnEnemies()
     {
+        yield return new WaitForSeconds(3f);
         while (_player != null)
         {
             GameObject newEnemy = Instantiate(_enemyPrefab);
@@ -38,6 +50,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerup()
     {
+        yield return new WaitForSeconds(3f);
         while (_player != null)
         {
             Instantiate(powerups[Random.Range(0, powerups.Length)]);

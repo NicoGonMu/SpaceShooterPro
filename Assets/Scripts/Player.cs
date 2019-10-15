@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _shield;
     [SerializeField]
+    private GameObject _rightFire;
+    [SerializeField]
+    private GameObject _leftFire;
+    [SerializeField]
     private bool _tripleShotEnabled = false;
     private bool _hasField = false;
     private float _powerupCD = 5f;
@@ -96,6 +100,24 @@ public class Player : MonoBehaviour
 
         _lives--;
         _uiManager.UpdateLives(_lives);
+
+        // Set damage animations
+        if (_lives == 2)
+        {
+            // Randomly select which engine will be damaged
+            int i = Random.Range(0, 2);
+            if (i == 0)
+            {
+                _rightFire.SetActive(true);
+            } else
+            {
+                _leftFire.SetActive(true);
+            }
+        } else
+        {
+            _rightFire.SetActive(true);
+            _leftFire.SetActive(true);
+        }
 
         if (_lives == 0)
         {
