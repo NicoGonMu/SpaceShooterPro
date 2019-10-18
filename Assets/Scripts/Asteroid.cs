@@ -7,6 +7,7 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     private float _rotateSpeed;
     private SpawnManager _spawnManager;
+    private AudioSource _explosion;
 
     private Animator _animator;
 
@@ -15,6 +16,7 @@ public class Asteroid : MonoBehaviour
     {
         _animator = gameObject.GetComponent<Animator>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        _explosion = GameObject.Find("Audio_Manager").GetComponent<AudioManager>().GetExplosion();
     }
 
     // Update is called once per frame
@@ -30,6 +32,7 @@ public class Asteroid : MonoBehaviour
             Destroy(other.gameObject);
             _animator.SetTrigger("Hit");
             gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            _explosion.Play();
             _spawnManager.StartSpawn();
             Destroy(gameObject, 2.5f);
 

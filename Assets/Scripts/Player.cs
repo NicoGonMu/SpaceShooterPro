@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Player : MonoBehaviour
 {
+    [SerializeField]
+    private AudioSource _shootAudio;
+    private AudioSource _explosion;
+    private AudioSource _powerUpSound;
+
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
@@ -34,6 +40,8 @@ public class Player : MonoBehaviour
     {
         transform.position = new Vector3(0, 0, 0);
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _explosion = GameObject.Find("Audio_Manager").GetComponent<AudioManager>().GetExplosion();
+        _powerUpSound = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -84,6 +92,8 @@ public class Player : MonoBehaviour
             {
                 Instantiate(_laserPrefab, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), new Quaternion());
             }
+
+            _shootAudio.Play();
         }
     }
 
@@ -122,12 +132,14 @@ public class Player : MonoBehaviour
         if (_lives == 0)
         {
             _uiManager.GameOver();
+            _explosion.Play();
             Destroy(gameObject);
         }
     }
 
     public void AddTripleShot()
     {
+        _powerUpSound.Play();
         _tripleShotEnabled = true;
         StartCoroutine(DisableTripleShot());
     }
@@ -140,6 +152,7 @@ public class Player : MonoBehaviour
 
     public void SpeedPowerup()
     {
+        _powerUpSound.Play();
         _speed = 8.5f;
         StartCoroutine(DisableSpeed());
     }
@@ -152,6 +165,7 @@ public class Player : MonoBehaviour
 
     public void ShieldPowerup()
     {
+        _powerUpSound.Play();
         _hasField = true;
         _shield.SetActive(true);
     }
